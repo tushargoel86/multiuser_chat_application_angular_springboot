@@ -1,0 +1,16 @@
+<div class="container-fluid mt-3" style="width: 400px">
+  <div class="card card-body text-center bg bg-light">
+    <div class="card-header">
+       Welcome to multi-user chat application
+      </div>
+    <form>
+      <div class="form-group mt-3">
+        <input type="text" placeholder="Enter user name to login.." #user />
+      </div>
+      <button (click)="onClick($event, user.value)" class="btn btn-dark">
+        Enter
+      </button>
+    </form>
+        <p *ngIf="this.isErrorVisible">user name already being used, please use different name</p>
+  </div>
+</div>

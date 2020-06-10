@@ -1,0 +1,131 @@
+<div class="container mt-3">
+  <div class="card mb-3" style="width: 200px height: 600px">
+    <h5 class="card-title text-center bg-light">Multi user chat application</h5>
+    <div class="row no-gutters">
+      <nav class="nav nav-pills flex-column navbar-light bg-info">
+        <!-- <nav id="navbar-example3" class="nav nav-pills flex-column"> -->
+        <a class="navbar-brand px-2" href="#">Online Users</a>
+        <nav *ngFor="let user of users">
+          <a class="nav-link">{{ user }}</a>
+        </nav>
+      </nav>
+      <!-- ending online users list-->
+      <div class="card-body mb-2 bg-secondary" style="height: 500px;">
+        <div>
+          <div class="row scroll" style="height: 400px;">
+            <ul>
+              <div *ngFor="let data of messages">
+                <div *ngIf="data.sender !== ''">
+                  <div *ngIf="data.message === 'NEW_USER_LOGIN'">
+                    <div class="font-weight-bold">
+                      {{ data.sender }} is login now
+                    </div>
+                  </div>
+                  <div *ngIf="data.message === 'LOG_OUT'">
+                    <div class="font-weight-bold">
+                      {{ data.sender }} is log out from the chat
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      data.message !== 'NEW_USER_LOGIN' &&
+                      data.message !== 'LOG_OUT'
+                    "
+                  >
+                    <div
+                      class="font-weight-normal text-white"
+                      style="width: 10rem;"
+                    >
+                      {{ data.sender }} : {{ data.message }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ul>
+          </div>
+          <div class="row mt-3" style="height: 100px;">
+            <form class="form-inline">
+              <div class="form-group p-2">
+                <input
+                  class="form-control"
+                  style="width: 300px;"
+                  placeholder="type your message here..."
+                  name="message"
+                  [(ngModel)]="data.message"
+                />
+              </div>
+
+              <div class="form-group">
+                <button
+                  (click)="handleMessage($event)"
+                  class="btn btn-info btn-lg mr-3"
+                >
+                  send
+                </button>
+                <button
+                  (click)="disconnect($event)"
+                  class="btn btn-dark btn-lg d-flex justify-content-end px-2"
+                >
+                  Logout
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="container mt-3">
+  <div class="card card-body">
+    <div class="row" data-spy="scroll">
+      <div class="col-2 bg-info">
+        Online Users
+        <ul>
+          <li *ngFor="let user of users">
+            {{ user }}
+          </li>
+        </ul>
+      </div>
+
+      <div data-spy="scroll" class="col-6 d-flex align-content-end col-md-auto">
+        <ul>
+          <div *ngFor="let data of messages">
+            <div *ngIf="data.sender !== ''">
+              <div *ngIf="data.message === 'NEW USER LOGIN'">
+                <div class="font-weight-bold">
+                  {{ data.sender }} is login now
+                </div>
+              </div>
+              <div *ngIf="data.message !== 'NEW USER LOGIN'">
+                <div class="font-weight-normal" style="width: 10rem;">
+                  {{ data.sender }} : {{ data.message }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </ul>
+        <div class="d-flex align-self-end">
+          <form class="form-inline col-auto">
+            <div class="form-group p-2">
+              <textarea
+                class="form-control form-control-lg"
+                placeholder="type your message here..."
+                name="message"
+                rows="3"
+                #message
+              ></textarea>
+            </div>
+            <button
+              (click)="handleMessage($event, message.value)"
+              class="btn btn-info btn-lg"
+            >
+              send
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

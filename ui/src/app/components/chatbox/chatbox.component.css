@@ -1,0 +1,20 @@
+/* .container-fluid,
+.row { height: 90%; }
+ 
+#form-input,
+#form-button {
+  line-height: 100px;
+  width: 100px;
+  font-size: 16px;
+}
+
+#form-input {
+  height: 100px;
+  width: 100px;
+} */
+
+.scroll {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
