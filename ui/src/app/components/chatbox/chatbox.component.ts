@@ -37,12 +37,12 @@ export class ChatboxComponent implements OnInit, OnDestroy {
         if (data.message === 'NEW_USER_LOGIN') {
           this.handleOnlineUsers(data.sender);
           if (this.user !== data.sender) this.messages.push(data);
-        } else  this.messages.push(data);
-        // } else if (data.message === 'LOG_OUT') {
-        //   this.messages.push(data);
-        // } else {
-        //   this.messages.push(data);
-        // }
+        } else if (data.message === 'LOG_OUT') {
+          this.messages.push(data);
+          this.removeUserFromLocalStorage(data.sender);
+        } else {
+          this.messages.push(data);
+        }
       }
     });
   }
@@ -50,10 +50,7 @@ export class ChatboxComponent implements OnInit, OnDestroy {
   handleOnlineUsers = (user: string) => {
     let tempUsers = localStorage.getItem('onlineUsers');
     this.users = tempUsers === null ? [] : tempUsers.split(':');
-    console.log('online users', JSON.stringify(this.users));
-    
-    if (this.users.indexOf(user) === -1 )
-         this.users.push(user);
+    if (this.users.indexOf(user) === -1) this.users.push(user);
     localStorage.setItem('onlineUsers', this.users.join(':'));
   };
 
@@ -67,15 +64,19 @@ export class ChatboxComponent implements OnInit, OnDestroy {
     };
   };
 
+  removeUserFromOnlineUserList(user: string, users: string[]): string[] {
+    if (users !== null) {
+        let index = users.indexOf(user);
+        if (index !== -1) users.splice(index, 1);
+      }
+    return users;
+  }
+
   removeUserFromLocalStorage(user: string) {
     let tempUsers = localStorage.getItem('onlineUsers');
     this.users = tempUsers === null ? [] : tempUsers.split(':');
-    this.users.forEach(user => {
-      let index = this.users.indexOf(user);
-      console.log('removing user from: ', index);
-      if (index !== -1) this.users.splice(index, 1);
-    });  
-    localStorage.setItem('onlineUsers', this.users.join(":"));
+    this.users = this.removeUserFromOnlineUserList(user, this.users);
+    localStorage.setItem('onlineUsers', this.users.join(':'));
   }
 
   disconnect = (e) => {
@@ -86,7 +87,7 @@ export class ChatboxComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.webSocketService.disconnect();
       window.location.replace('');
-     // this.router.navigate(['']);
+      // this.router.navigate(['']);
     }, 1000);
   };
 
@@ -94,5 +95,4 @@ export class ChatboxComponent implements OnInit, OnDestroy {
     this.removeUserFromLocalStorage(this.user);
     this.webSocketService.disconnect();
   }
-
 }
